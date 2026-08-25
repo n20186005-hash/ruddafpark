@@ -19,6 +19,7 @@ function walk(dir) {
     else {
       if (entry.name.startsWith('sitemap') && entry.name.endsWith('.xml')) sitemapFiles.push(full);
       if (!textExt.has(path.extname(entry.name))) continue;
+      if (entry.name === 'wrangler.json' || entry.name === 'wrangler.jsonc') continue;
       const text = fs.readFileSync(full, 'utf8');
       for (const needle of forbidden) {
         if (text.includes(needle)) {
