@@ -17,7 +17,7 @@ export const attraction = {
     { day: 'Friday', opens: '16:00', closes: '01:00' },
     { day: 'Saturday', opens: '16:00', closes: '01:00' }
   ],
-  mapUrl: 'https://www.google.com/maps/search/?api=1&query=%D8%A7%D8%A8%D9%88%20%D8%B7%D8%A7%D9%84%D8%A8%2C%20Al%20Ruddaf%2C%20Taif%2026514%20Saudi%20Arabia',
+  mapUrl: 'https://maps.app.goo.gl/1LSHL6BJuCZPjjoq9',
   mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6624.588588681157!2d40.422681377106834!3d21.229180580470974!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15e98efecd5cd645%3A0xd24fb5ad77517e90!2sRuddaf%20Park!5e1!3m2!1sar!2ssa!4v1787621144576!5m2!1sar!2ssa&hl=ar',
   sources: {
     visitSaudi: 'https://www.visitsaudi.com/ar/taif/attractions/arruddaf-park-in-taif',
