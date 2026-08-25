@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="دليل منتزه الردف">
+  <rect width="1200" height="630" fill="#102b29"/>
+  <circle cx="140" cy="100" r="240" fill="#3a8f91" opacity=".12"/>
+  <circle cx="1050" cy="570" r="330" fill="#9c4d61" opacity=".11"/>
+  <path d="M640 510c28-163 131-285 297-367 122 55 197 155 225 300-119-63-229-66-331-14-73 36-137 63-191 81Z" fill="#d7bd8c" opacity=".88"/>
+  <path d="M590 535c119-72 239-90 359-53 78 24 144 69 198 135-104-27-204-24-299 8H590Z" fill="#3a8f91"/>
+  <path d="M1010 178c73 18 108 73 102 161-76-13-119-55-130-128l28-33Z" fill="#9c4d61"/>
+  <text x="120" y="280" direction="rtl" text-anchor="start" font-size="104" font-family="Tahoma, Arial, sans-serif" font-weight="700" fill="#fffdf7">منتزه الردف</text>
+  <text x="120" y="360" direction="rtl" text-anchor="start" font-size="36" font-family="Tahoma, Arial, sans-serif" fill="#dce7e2">دليل مستقل وغير ربحي لزوار الطائف</text>
+  <text x="120" y="455" direction="rtl" text-anchor="start" font-size="24" font-family="Tahoma, Arial, sans-serif" fill="#a9c7c2">المكان · القصة · الوصول · المرافق · الخريطة</text>
+</svg>

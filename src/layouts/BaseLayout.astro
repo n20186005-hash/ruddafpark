@@ -1,0 +1,81 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { attraction } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  imagePath?: string;
+  compactHeader?: boolean;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+  title,
+  description,
+  imagePath = '/brand/og-image.png',
+  compactHeader = false,
+  schema
+} = Astro.props;
+
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined;
+const ogImage = Astro.site ? new URL(imagePath, Astro.site).toString() : undefined;
+const schemaPayload = schema
+  ? JSON.stringify(Array.isArray(schema) ? schema : [schema]).replace(/</g, '\\u003c')
+  : undefined;
+---
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#102b29" />
+    <meta name="color-scheme" content="light" />
+    <title>{title}</title>
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ar_SA" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+    <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/brand/favicon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/brand/apple-touch-icon.png" />
+    {schemaPayload && <script type="application/ld+json" set:html={schemaPayload} />}
+    <script is:inline>
+      (() => {
+        const measurementId = 'G-HXM22WWPKP';
+        const readCookie = (name) => document.cookie.split('; ').find((row) => row.startsWith(name + '='))?.split('=')[1];
+        try {
+          const raw = readCookie('ruddaf_consent');
+          if (!raw) return;
+          const prefs = JSON.parse(decodeURIComponent(raw));
+          if (!prefs?.analytics) return;
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = function(){ window.dataLayer.push(arguments); };
+          window.gtag('js', new Date());
+          window.gtag('config', measurementId, { anonymize_ip: true });
+          const script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.googletagmanager.com/gtag/js?id=' + measurementId;
+          document.head.appendChild(script);
+        } catch (_) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">انتقل إلى المحتوى</a>
+    <Header compact={compactHeader} />
+    <main id="content"><slot /></main>
+    <Footer />
+  </body>
+</html>

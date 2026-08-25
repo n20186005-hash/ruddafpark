@@ -1,0 +1,18 @@
+---
+const compact = Astro.props.compact ?? false;
+---
+<header class:list={["fixed inset-x-0 top-0 z-50", compact ? "bg-[#fffdf7]/95 text-[#17352f] border-b border-[#17352f]/10 backdrop-blur-xl" : "text-white"]}>
+  <div class="shell flex items-center justify-between gap-4 py-4">
+    <a href="/" class="flex items-center gap-3 no-underline" aria-label="العودة إلى الصفحة الرئيسية">
+      <img src="/brand/logo-mark.svg" alt="" width="42" height="42" class="h-10 w-10" />
+      <span class="font-extrabold tracking-tight">دليل منتزه الردف</span>
+    </a>
+    <nav aria-label="التنقل الرئيسي" class="hidden items-center gap-5 text-sm font-bold md:flex">
+      <a href="/#story" class="no-underline opacity-90 hover:opacity-100">القصة</a>
+      <a href="/#plan" class="no-underline opacity-90 hover:opacity-100">خطط زيارتك</a>
+      <a href="/#transport" class="no-underline opacity-90 hover:opacity-100">الوصول</a>
+      <a href="/#faq" class="no-underline opacity-90 hover:opacity-100">الأسئلة</a>
+    </nav>
+    <a href="/#map" class:list={["button text-sm", compact ? "button-primary" : "button-hero"]}>الخريطة</a>
+  </div>
+</header>

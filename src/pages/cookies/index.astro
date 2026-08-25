@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const title = 'إعدادات ملفات تعريف الارتباط | دليل منتزه الردف';
+const description = 'إدارة ملفات تعريف الارتباط والتحليلات في دليل منتزه الردف.';
+---
+<BaseLayout title={title} description={description} compactHeader={true}>
+  <article class="legal-shell">
+    <span class="eyebrow">تحكم واضح</span>
+    <h1>إعدادات ملفات تعريف الارتباط</h1>
+    <p><strong>آخر تحديث: أغسطس 2026</strong></p>
+    <p>نستخدم أقل عدد ممكن من ملفات تعريف الارتباط. يمكنك تغيير قرارك في أي وقت. لن نشغّل إحصاءات جوجل ما لم تفعل خيار التحليلات صراحةً.</p>
+
+    <section aria-labelledby="necessary-title">
+      <div class="toggle-row">
+        <div><h2 id="necessary-title" class="!m-0 !text-lg">ملفات ضرورية</h2><p class="!m-0 !text-sm">تحفظ قرار الموافقة وتدعم التشغيل الأساسي. لا تُستخدم للإعلانات.</p></div>
+        <label class="switch" aria-label="الملفات الضرورية مفعلة دائمًا"><input type="checkbox" checked disabled /><span></span></label>
+      </div>
+    </section>
+
+    <section aria-labelledby="analytics-title">
+      <div class="toggle-row">
+        <div><h2 id="analytics-title" class="!m-0 !text-lg">ملفات التحليلات</h2><p class="!m-0 !text-sm">عند تفعيلها نحمّل إحصاءات جوجل بمعرّف القياس الخاص بالموقع لفهم الاستخدام بصورة مجمعة.</p></div>
+        <label class="switch" aria-label="تفعيل التحليلات"><input id="analytics" type="checkbox" /><span></span></label>
+      </div>
+    </section>
+
+    <section aria-labelledby="preferences-title">
+      <div class="toggle-row">
+        <div><h2 id="preferences-title" class="!m-0 !text-lg">ملفات التفضيلات</h2><p class="!m-0 !text-sm">تسمح للموقع مستقبلًا بتذكر إعدادات واجهة غير حساسة. لا توجد حاليًا خصائص تخصيص جوهرية تعتمد عليها.</p></div>
+        <label class="switch" aria-label="تفعيل التفضيلات"><input id="preferences" type="checkbox" /><span></span></label>
+      </div>
+    </section>
+
+    <section aria-labelledby="marketing-title">
+      <div class="toggle-row">
+        <div><h2 id="marketing-title" class="!m-0 !text-lg">ملفات التسويق</h2><p class="!m-0 !text-sm">غير مستخدمة في هذا المشروع غير الربحي، ولا نفعّل الإعلانات المخصصة أو قياس الحملات الإعلانية.</p></div>
+        <label class="switch" aria-label="ملفات التسويق معطلة"><input type="checkbox" disabled /><span></span></label>
+      </div>
+    </section>
+
+    <h2>إدارة الموافقة</h2>
+    <p>يحفظ قرارك لمدة تصل إلى ستة أشهر في ملف تعريف ارتباط أولي. يمكنك حذف ملفات الموقع من متصفحك في أي وقت، أو استخدام الأزرار أدناه لتغيير القرار. رفض الخيارات غير الضرورية لا يمنعك من قراءة الدليل أو استخدام الخريطة.</p>
+
+    <div class="mt-6 flex flex-wrap gap-3">
+      <button id="save" class="button button-primary" type="button">حفظ التفضيلات</button>
+      <button id="reject" class="button button-secondary" type="button">رفض غير الضروري</button>
+      <button id="clear" class="button button-secondary" type="button">مسح القرار المحفوظ</button>
+    </div>
+    <p id="status" class="mt-4 min-h-7 text-sm font-bold text-[#1d696c]" role="status" aria-live="polite"></p>
+
+    <h2>ملاحظة عن الخرائط</h2>
+    <p>تضمين خرائط جوجل موجود في الصفحة الرئيسية وقد يستخدم تقنيات تخزين أو اتصال خاصة بـ Google عند تحميل الخريطة. إذا كنت لا ترغب في ذلك، يمكنك الاكتفاء بمحتوى النص وعدم التفاعل مع قسم الخريطة، أو استخدام إعدادات الخصوصية في متصفحك.</p>
+
+    <a class="button button-primary mt-8" href="/">العودة إلى دليل المنتزه</a>
+  </article>
+  <script is:inline>
+    (() => {
+      const analytics = document.getElementById('analytics');
+      const preferences = document.getElementById('preferences');
+      const status = document.getElementById('status');
+      const readCookie = (name) => document.cookie.split('; ').find((row) => row.startsWith(name + '='))?.split('=')[1];
+      const render = () => {
+        try {
+          const raw = readCookie('ruddaf_consent');
+          if (!raw) return;
+          const prefs = JSON.parse(decodeURIComponent(raw));
+          analytics.checked = Boolean(prefs.analytics);
+          preferences.checked = Boolean(prefs.preferences);
+        } catch (_) {}
+      };
+      const write = (prefs) => {
+        const maxAge = 60 * 60 * 24 * 183;
+        document.cookie = 'ruddaf_consent=' + encodeURIComponent(JSON.stringify(prefs)) + '; Path=/; Max-Age=' + maxAge + '; SameSite=Lax; Secure';
+      };
+      document.getElementById('save')?.addEventListener('click', () => {
+        write({ necessary: true, analytics: analytics.checked, preferences: preferences.checked, marketing: false });
+        status.textContent = 'تم حفظ تفضيلاتك. سيُطبّق إعداد التحليلات في الزيارة التالية أو بعد إعادة تحميل الصفحة.';
+      });
+      document.getElementById('reject')?.addEventListener('click', () => {
+        analytics.checked = false;
+        preferences.checked = false;
+        write({ necessary: true, analytics: false, preferences: false, marketing: false });
+        status.textContent = 'تم رفض جميع الخيارات غير الضرورية.';
+      });
+      document.getElementById('clear')?.addEventListener('click', () => {
+        document.cookie = 'ruddaf_consent=; Path=/; Max-Age=0; SameSite=Lax; Secure';
+        analytics.checked = false;
+        preferences.checked = false;
+        status.textContent = 'تم مسح قرار الموافقة المحفوظ.';
+      });
+      render();
+    })();
+  </script>
+</BaseLayout>
