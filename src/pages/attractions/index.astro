@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { facilities } from '../../data/site';
+
+const title = 'مرافق ومناطق منتزه الردف | البحيرة والنافورة والصخور';
+const description = 'تعرف على مرافق منتزه الردف في الطائف: البحيرة والنافورة التفاعلية، صخور الردف الجرانيتية، الممرات والخضرة، مناطق اللعب والعائلات، المسرح المفتوح والفعاليات — مع نصائح عملية للاستمتاع بكل مرافق.';
+
+const icons: Record<string, string> = {
+  lake: '≈',
+  rocks: '◑',
+  paths: '↟',
+  play: '⌂',
+  theater: '◎',
+  seating: '☾',
+  events: '✦'
+};
+---
+
+<BaseLayout title={title} description={description} compactHeader={true}>
+  <PageHeader
+    eyebrow="ما الذي ستجد؟"
+    title="مرافق ومناطق منتزه الردف"
+    lead="المنتزه يجمع بين طبوغرافية صخرية طبيعية ومرافق مدنية حديثة. نستعرض أبرز المساحات والعناصر كما وثقتها المصادر الرسمية، مع نصائح لكيفية الاستفادة منها أثناء الزيارة."
+    breadcrumbs={[{ name: 'الرئيسية', url: '/' }, { name: 'المرافق والنافورة', url: '/attractions/' }]}
+  />
+
+  <section class="section">
+    <div class="shell">
+      <span class="eyebrow">عناصر المكان</span>
+      <h2 class="section-title">الماء والصخر والخضرة في مساحة واحدة</h2>
+      <p class="section-lead">تصف وكالة الأنباء السعودية في تقرير حديث المنتزه بأنه يضم حدائق ومساحات خضراء وممرات وساحات مفتوحة وبحيرة ونافورة تفاعلية ومسرحًا مفتوحًا وملاعب أطفال ومناطق جلوس.</p>
+      <div class="fact-grid mt-8">
+        {facilities.map((f) => (
+          <article class="card fact-card">
+            <div class="icon-box">{icons[f.key] ?? '•'}</div>
+            <h3>{f.title}</h3>
+            <p>{f.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-[#f2e6ce]/35" id="tips">
+    <div class="shell grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-center">
+      <div>
+        <span class="eyebrow">خطط جولتك</span>
+        <h2 class="section-title">كيف تستمتع بكل مرافق؟</h2>
+        <p class="section-lead">اقتراحات عملية لا تفترض وقتًا ثابتًا للفعاليات، وتساعدك على توزيع الجولة بحسب وقتك ونوع مجموعتك.</p>
+      </div>
+      <div class="grid gap-3">
+        <div class="rounded-2xl border border-[#17352f]/10 bg-white/70 p-5 text-sm text-[#49645d]"><strong class="text-[#17352f]">البحيرة والنافورة مساءً:</strong> ابدأ جولتك قبل الغروب لتشاهد المشهد في الضوء الطبيعي ثم الإضاءة والنافورة عند تشغيلها.</div>
+        <div class="rounded-2xl border border-[#17352f]/10 bg-white/70 p-5 text-sm text-[#49645d]"><strong class="text-[#17352f]">الصخور صباحًا:</strong> الكتل الجرانيتية تظهر تفاصيلها بشكل أوضح في ضوء الصباح؛ خصص لها وقتًا للتصوير الهادئ.</div>
+        <div class="rounded-2xl border border-[#17352f]/10 bg-white/70 p-5 text-sm text-[#49645d]"><strong class="text-[#17352f]">العائلات:</strong> حدد نقطة تجمع قرب مناطق اللعب قبل البدء، ورتب جلسة راحة في مساحات الجلوس بين المشي.</div>
+        <div class="rounded-2xl border border-[#17352f]/10 bg-white/70 p-5 text-sm text-[#49645d]"><strong class="text-[#17352f]">الفعاليات:</strong> راجع البرنامج الرسمي في يوم الزيارة؛ فبعض الفعاليات قد يغيّر حركة الدخول أو يخصّص مساحات معينة.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell">
+      <h2 class="section-title !text-2xl">صفحات ذات صلة</h2>
+      <nav aria-label="روابط ذات صلة" class="related-grid">
+        <a href="/location-hours/"><strong>الموقع والساعات</strong><span>العنوان، المواصلات والمواقف</span></a>
+        <a href="/gallery/"><strong>صور منتزه الردف</strong><span>لمحات حقيقية من المرافق</span></a>
+        <a href="/faq/"><strong>الأسئلة الشائعة</strong><span>تذاكر، وصول، عائلة وطقس</span></a>
+        <a href="/"><strong>الدليل الكامل</strong><span>القصة والاستراتيجية الموسمية</span></a>
+      </nav>
+    </div>
+  </section>
+</BaseLayout>

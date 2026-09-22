@@ -1,0 +1,44 @@
+---
+interface Crumb { name: string; url: string; }
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  breadcrumbs?: Crumb[];
+}
+const { eyebrow, title, lead, breadcrumbs } = Astro.props;
+const site = Astro.site;
+const crumbSchema = breadcrumbs
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: breadcrumbs.map((c, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: c.name,
+        item: site ? new URL(c.url, site).toString() : c.url
+      }))
+    }
+  : null;
+---
+
+<section class="subpage-hero">
+  <div class="shell subpage-hero-inner">
+    {breadcrumbs && (
+      <nav aria-label="مسار التنقل" class="breadcrumbs">
+        <ol>
+          {breadcrumbs.map((c, i) => (
+            <li>
+              <a href={c.url}>{c.name}</a>
+              {i < breadcrumbs.length - 1 && <span aria-hidden="true"> › </span>}
+            </li>
+          ))}
+        </ol>
+      </nav>
+    )}
+    <span class="eyebrow">{eyebrow}</span>
+    <h1>{title}</h1>
+    <p>{lead}</p>
+  </div>
+  {crumbSchema && <script type="application/ld+json" set:html={JSON.stringify(crumbSchema).replace(/</g, '\\u003c')} />}
+</section>

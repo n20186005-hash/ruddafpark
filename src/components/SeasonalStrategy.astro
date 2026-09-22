@@ -1,0 +1,31 @@
+---
+const seasons = [
+  { name: 'الربيع', months: 'مارس – مايو', climate: 'اعتدال لطيف ومشهد الورد الطائفي في ذرته، مع أشعة مريحة نهارًا ومناسبة للمشي.', advice: 'من أجمل الفصول للزيارة العائلية والتصوير. راقب مواعيد مهرجان الورد الرسمي قبل تخصيص وقت للزيارة.' },
+  { name: 'الصيف', months: 'يونيو – أغسطس', climate: 'الطائف تُعرف بكونها مصيفًا؛ حرارة أنسب بكثير من المدن المنخفضة، وأمسية منعشة عادةً.', advice: 'ذروة المواسم والفعاليات؛ يُفضّل الوصول مبكرًا والجلوس قرب الغروب. احتمال الازدحام أعلى.' },
+  { name: 'الخريف', months: 'سبتمبر – نوفمبر', climate: 'انتقال تدريجي نحو الاعتدال، مع احتمال هطول متفرق بين الحين والآخر.', advice: 'فصل مريح للزيارات الهادئة؛ تابع نشرة الطقس قبل التحرك لاحتمال مطر خفيف.' },
+  { name: 'الشتاء', months: 'ديسمبر – فبراير', climate: 'نهار مشمس معتدل، وليالٍ باردة قد تقترب من الصفر على المرتفعات المحيطة.', advice: 'احمل طبقة دافئة للمساء، واحذر الضباب أو المطر الخفيف على الطرق الجبلية المؤدية للطائف.' }
+];
+const headers = ['الموسم', 'المناخ المتوقع', 'نصيحة الزيارة'];
+---
+
+<section class="section bg-[#f2e6ce]/35" id="seasons" aria-labelledby="seasons-title">
+  <div class="shell">
+    <span class="eyebrow">متى تزور؟</span>
+    <h2 class="section-title" id="seasons-title">استراتيجية الزيارة حسب فصول الطائف</h2>
+    <p class="section-lead">الطائف مدينة مرتفعة (نحو 1,800 م فوق سطح البحر)، لذا يختلف مناخها كثيرًا عن المدن السعودية المنخفضة. الجدول أدناه يلخّص متوسطات مناخية مرجعية مبنية على طبيعة المرتفعات، لا كقاعدة يومية ثابتة. طقس الجبال قد يتغير خلال ساعات، لذا راجع التنبيهات الرسمية في يوم الزيارة.</p>
+    <div class="season-table" role="table" aria-label="استراتيجية الزيارة حسب الفصول">
+      <div class="season-row is-head" role="row">
+        <span role="columnheader">{headers[0]}</span>
+        <span role="columnheader">{headers[1]}</span>
+        <span role="columnheader">{headers[2]}</span>
+      </div>
+      {seasons.map((s) => (
+        <div class="season-row" role="row">
+          <div role="cell"><h3>{s.name}</h3><span class="season-when">{s.months}</span></div>
+          <p role="cell">{s.climate}</p>
+          <p role="cell">{s.advice}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,42 @@
+---
+const cards = [
+  {
+    icon: '◒',
+    title: 'الصخور والجيولوجيا',
+    text: 'تكوينات الردف الجرانيتية الطبيعية جزء أصيل من طبوغرافية الطائف، لا ديكورًا مستحدثًا. الورد الجرانيتي المميز للمنطقة يروي قصة برودة صهارة قديمة تحت ضغط عميق. حافظ عليها كما هي، ولا تخطّ أو تكسر الصخور.'
+  },
+  {
+    icon: '≈',
+    title: 'الماء والبحيرة',
+    text: 'البحيرة والنافورة نظام مائي مُنظَّم داخل المنتزه. ارمِ النفايات في الأماكن المخصصة، ولا تلقِ أي شيء في المياه حفاظًا على جودتها وراحة الزوار الآخرين.'
+  },
+  {
+    icon: '❀',
+    title: 'الورد والمناخ المرتفع',
+    text: 'للطائف ارتباط معروف بصناعة الورد واعتدال صيفها بفضل ارتفاعها. هذا المناخ هو ما يجعل الردف متنفّسًا للمدينة؛ احترم النباتات المحيطة ولا تقطفها.'
+  },
+  {
+    icon: '♿',
+    title: 'آداب الزيارة والمسؤولية',
+    text: 'ابقَ على المسارات الممهدة، وراقب الأطفال قرب الماء، واحترم أوقات الصلاة والهدوء، ولا تطعم الطيور أو الحياة المحلية. في الطوارئ اتبع إرشادات أمن المنتزه وخدمات الطوارئ الرسمية.'
+  }
+];
+---
+
+<section class="section bg-[#102b29] text-white" id="responsibility" aria-labelledby="responsibility-title">
+  <div class="shell grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-start">
+    <div>
+      <span class="eyebrow !bg-white/10 !text-white before:!bg-[#d7bd8c]">科普 والمسؤولية</span>
+      <h2 class="section-title" id="responsibility-title">افهم المكان، ثم احمِه</h2>
+      <p class="section-lead !text-white/70">الردف أكثر من مساحة جلوس: هو تقاطع بين صخور قديمة وماء مُنظَّم ومناخ مرتفع. فهم هذه العناصر يساعدك على زيارة أكثر وعيًا، ويحفظ المكان للزوار القادمين.</p>
+    </div>
+    <div class="responsibility-grid">
+      {cards.map((c) => (
+        <article class="card responsibility-card">
+          <h3><span class="icon-box !bg-white/10 !text-white" aria-hidden="true">{c.icon}</span>{c.title}</h3>
+          <p>{c.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

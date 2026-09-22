@@ -1,6 +1,28 @@
+# ---- Dependencies ----
 node_modules/
+
+# ---- Build / deploy artifacts ----
 dist/
 .astro/
 .wrangler/
+.wrangler-out/
+.dev.vars
+
+# ---- Env / secrets ----
 .env
+.env.*
+!.env.example
+
+# ---- Logs ----
+*.log
+install.log
+install.err
+pnpm-debug.log*
+
+# ---- OS / editor ----
 .DS_Store
+Thumbs.db
+*.tsbuildinfo
+
+# ---- Local helper scripts (optional) ----
+# scripts/__local__/

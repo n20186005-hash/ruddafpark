@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { nearbyPlaces } from '../../data/site';
+
+const title = 'معالم الطائف القريبة من منتزه الردف | قصر شبرا والهدا والشفا وسوق عكاظ';
+const description = 'معالم عامة قريبة من منتزه الردف في الطائف لإكمال يومك: قصر شبرا والمنطقة التاريخية، الهدا، الشفا، وسوق عكاظ — مع نصائح عملية للربط بينها في مسار واحد.';
+
+const icons: Record<string, string> = {
+  shubra: '🏛',
+  hada: '⛰',
+  shafa: '🌿',
+  okaz: '📜'
+};
+---
+
+<BaseLayout title={title} description={description} compactHeader={true}>
+  <PageHeader
+    eyebrow="أكمل يومك"
+    title="معالم الطائف القريبة من منتزه الردف"
+    lead="ليس هذا دليلًا للأفضل ولا توصيات مدفوعة؛ إنه أمثلة لمعالم عامة وثقافية وطبيعية تساعدك على بناء خط سير متوازن حول زيارة الردف. تحقق من الدخول وساعات التشغيل رسميًا قبل التخصيص."
+    breadcrumbs={[{ name: 'الرئيسية', url: '/' }, { name: 'معالم قريبة', url: '/nearby/' }]}
+  />
+
+  <section class="section">
+    <div class="shell">
+      <span class="eyebrow">أمثلة لمعالم عامة</span>
+      <h2 class="section-title">معالم الطائف حول الردف</h2>
+      <p class="section-lead">يمكن جمع أكثر من وجهة في يوم واحد إن توفر الوقت والسيارة، مع مراجعة الطريق والطقس خصوصًا للمناطق الجبلية.</p>
+      <div class="fact-grid mt-8">
+        {nearbyPlaces.map((p) => (
+          <article class="card fact-card">
+            <div class="icon-box">{icons[p.key] ?? '◉'}</div>
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+            {p.href && (
+              <p class="m-0 mt-2"><a class="text-[#1d696c] font-bold underline underline-offset-4" href={p.href} target="_blank" rel="noopener noreferrer">مصدر رسمي للوجهة ↗</a></p>
+            )}
+          </article>
+        ))}
+      </div>
+
+      <div class="notice mt-8">
+        لا نرتب هذه المعالم ترتيبًا يدّعي الأفضلية، ولا نربطك بمنشأة تجارية بعينها. اختر بحسب قرب الوجهة من مسار رحلتك واهتمام مجموعتك، وراجع البرنامج الرسمي لكل موسم قبل الذهاب.
+      </div>
+
+      <nav aria-label="روابط ذات صلة" class="related-grid">
+        <a href="/location-hours/"><strong>الموقع والساعات</strong><span>خطط الوصول إلى الردف أولًا</span></a>
+        <a href="/attractions/"><strong>المرافق والنافورة</strong><span>تعرف على ما داخل المنتزه</span></a>
+        <a href="/faq/"><strong>الأسئلة الشائعة</strong><span>أجوبة عملية قبل الزيارة</span></a>
+        <a href="/"><strong>الدليل الكامل</strong><span>القصة والاستراتيجية الموسمية</span></a>
+      </nav>
+    </div>
+  </section>
+</BaseLayout>

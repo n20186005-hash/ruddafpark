@@ -1,0 +1,84 @@
+---
+import { getWeather } from '../lib/weather';
+
+const weather = await getWeather();
+const now = weather.now ?? null;
+const days = weather.days ?? [];
+const today = days[0] ?? null;
+const advice = weather.advice ?? null;
+const gustText = now && now.gust > 0 ? ` (هبات ${now.gust})` : '';
+const showWeather = weather.ok && !!now;
+---
+
+<section class="section" id="weather" aria-labelledby="weather-title">
+  <div class="shell">
+    <span class="eyebrow">الطقس في الطائف</span>
+    <h2 class="section-title" id="weather-title">طقس اليوم وتوقعات الأيام القادمة</h2>
+    <p class="section-lead">تُحدَّث هذه البطاقة آليًا من مصدر تنبؤات مناخية عند كل زيارة، وتقترح خطوات عملية حسب الحالة الراهنة. الأرقام إرشادية وليست بديلًا عن تنبيهات الطقس الرسمية.</p>
+
+    {showWeather && (
+      <div class="weather-wrap mt-8">
+        <div class="weather-now card">
+          <div class="weather-now-head">
+            <span class="weather-icon" aria-hidden="true">{now.icon}</span>
+            <div>
+              <div class="weather-temp">{now.temperature}°</div>
+              <div class="weather-label">{now.label}</div>
+            </div>
+          </div>
+          <ul class="weather-stats">
+            <li><span>الإحساس</span><strong>{now.apparentTemperature}°</strong></li>
+            <li><span>الرطوبة</span><strong>{now.humidity}%</strong></li>
+            <li><span>الرياح</span><strong>{now.windSpeed} كم/س · {now.windLabel}{gustText}</strong></li>
+            {today && <li><span>احتمال المطر اليوم</span><strong>{today.precipProb}%</strong></li>}
+            {today && <li><span>الأشعة فوق البنفسجية</span><strong>{today.uvIndex} · {today.uvLabel}</strong></li>}
+          </ul>
+          {weather.updatedAt && <p class="weather-updated">آخر تحديث: {weather.updatedAt}</p>}
+        </div>
+
+        {days.length > 0 && (
+          <div class="weather-days" aria-label="توقعات الأيام القادمة">
+            {days.map((day, i) => (
+              <article class="weather-day" class:list={[i === 0 ? 'is-today' : '']}>
+                <span class="weather-day-name">{i === 0 ? 'اليوم' : day.weekday}</span>
+                <span class="weather-day-icon" aria-hidden="true">{day.icon}</span>
+                <span class="weather-day-label">{day.label}</span>
+                <span class="weather-day-temp"><strong>{day.tMax}°</strong> / {day.tMin}°</span>
+                {day.precipProb > 0 && <span class="weather-day-rain">مطر {day.precipProb}%</span>}
+                {day.uvIndex >= 5 && <span class="weather-day-rain">أشعة {day.uvIndex}</span>}
+              </article>
+            ))}
+          </div>
+        )}
+
+        {advice && (
+          <div>
+            {advice.risk.length > 0 && (
+              <div class="advice-risk" role="alert">
+                <h3>⚠ تنبيه سلامة</h3>
+                <ul>{advice.risk.map((r) => <li>{r}</li>)}</ul>
+              </div>
+            )}
+            <div class="weather-advice">
+              {advice.outfit.length > 0 && (
+                <div class="advice-group"><h3>👕 ما ترتدي</h3><ul>{advice.outfit.map((x) => <li>{x}</li>)}</ul></div>
+              )}
+              {advice.activity.length > 0 && (
+                <div class="advice-group"><h3>🗺 ترتيب الزيارة</h3><ul>{advice.activity.map((x) => <li>{x}</li>)}</ul></div>
+              )}
+              {advice.items.length > 0 && (
+                <div class="advice-group"><h3>🎒 أغراض للحمل</h3><ul>{advice.items.map((x) => <li>{x}</li>)}</ul></div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    )}
+
+    {!showWeather && (
+      <div class="notice mt-8">
+        تعذّر عرض الطقس حاليًا. يمكنك مراجعة تطبيق الطقس المثبّت لديك قبل الزيارة، وسيعود العرض تلقائيًا لاحقًا.
+      </div>
+    )}
+  </div>
+</section>

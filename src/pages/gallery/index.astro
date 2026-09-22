@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { photos, attraction } from '../../data/site';
+
+const title = 'صور منتزه الردف | لمحات حقيقية من الطائف';
+const description = 'مجموعة صور حقيقية لمنتزه الردف في الطائف: البحيرة والنافورة التفاعلية، الصخور الجرانيتية، الممشى والخضرة — مع مصادر النشر وحقوق الصور الأصلية.';
+
+const notes = [
+  'لقطة جوية تظهر البحيرة والمساحات الخضراء والصخور معًا؛ أفضل زاوية لفهم تخطيط المنتزه ككل قبل الوصول.',
+  'البحيرة والنافورة التفاعلية ومسار المشاة: العنصر البصري المركزي الذي تزداد جاذبيته مساءً عند تشغيل الإضاءة.',
+  'ممشى يحيط به نخيل ومساحات جلوس؛ مثال على المسارات والخضرة المظللة الموزعة داخل المنتزه.'
+];
+---
+
+<BaseLayout title={title} description={description} compactHeader={true}>
+  <PageHeader
+    eyebrow="معرض الصور"
+    title="صور منتزه الردف"
+    lead="لمحات حقيقية توثّق طبيعة المكان ومرافقه كما وردت في منشورات إعلامية وسياحية. جميع الصور تبقى حقوقها لأصحابها الأصليين، وتُذكر مصادر النشر أسفل كل صورة."
+    breadcrumbs={[{ name: 'الرئيسية', url: '/' }, { name: 'الصور', url: '/gallery/' }]}
+  />
+
+  <section class="section">
+    <div class="shell">
+      <div class="gallery-grid">
+        {photos.map((photo, i) => (
+          <figure class="gallery-fig">
+            <img src={photo.src} alt={photo.alt} width="1200" height="800" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" referrerpolicy="no-referrer" />
+            <figcaption>
+              <p class="m-0">{notes[i] ?? photo.alt}</p>
+              <p class="m-0 mt-2 text-[#9c4d61]"><a href={photo.creditUrl} target="_blank" rel="noopener noreferrer" class="underline underline-offset-4">{photo.credit}</a> · الحقوق لأصحاب الصورة الأصليين</p>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+
+      <div class="notice mt-8">
+        عدد الصور المعروضة هنا محدود بما تأكدنا من نشره رسميًا أو في منشورات موثوقة، ولا نعيد نشر صور دون إسناد. لمزيد من اللمحات البصرية راجع المصادر الرسمية المدرجة في صفحة المصادر بالدليل الكامل.
+      </div>
+
+      <nav aria-label="روابط ذات صلة" class="related-grid">
+        <a href="/attractions/"><strong>المرافق والنافورة</strong><span>اقرأ وصف كل عنصر ظاهر في الصور</span></a>
+        <a href="/location-hours/"><strong>الموقع والساعات</strong><span>خطط زيارتك لرؤية المكان مباشرة</span></a>
+        <a href={attraction.sources.visitSaudi} target="_blank" rel="noopener noreferrer"><strong>روح السعودية — الطائف</strong><span>مصدر رسمي للوجهة وصورها</span></a>
+        <a href="/"><strong>الدليل الكامل</strong><span>القصة والمصادر والاستراتيجية</span></a>
+      </nav>
+    </div>
+  </section>
+</BaseLayout>

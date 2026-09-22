@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { attraction } from '../../data/site';
+
+const title = 'الموقع وساعات زيارة منتزه الردف | العنوان والمواصلات والخريطة';
+const description = `عنوان منتزه الردف في الطائف (${attraction.address})، الإحداثيات والرمز المكاني ${attraction.plusCode}، ساعات العمل 4 عصرًا حتى 1 صباحًا، الوصول من المطار والحافلات وتطبيقات النقل، المواقف وخريطة الاتجاهات.`;
+
+const days = attraction.hours;
+---
+
+<BaseLayout title={title} description={description} compactHeader={true}>
+  <PageHeader
+    eyebrow="التخطيط للزيارة"
+    title="الموقع وساعات زيارة منتزه الردف"
+    lead="كل ما تحتاجه قبل تحديد الموعد والطريق: العنوان الدقيق، الإحداثيات، ساعات العمل المعروفة، خيارات الوصول من المطار وداخل الطائف، والمواقف مع خريطة تفاعلية."
+    breadcrumbs={[{ name: 'الرئيسية', url: '/' }, { name: 'الموقع والساعات', url: '/location-hours/' }]}
+  />
+
+  <section class="section" id="hours">
+    <div class="shell grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-start">
+      <div>
+        <span class="eyebrow">ساعات العمل</span>
+        <h2 class="section-title">متى يفتح المنتزه؟</h2>
+        <p class="section-lead">يرد في «دليل صيف السعودية» أن العمل من الإثنين إلى السبت بين 4 عصرًا و1 صباحًا، مع وصف عام بامتداد النشاط لمنتصف الليل. ننقل ما وثقناه رسميًا ونشير إلى ما يجب التحقق منه.</p>
+        <div class="notice mt-6">لم نعثر على توقيت موثق للأحد في المصادر التي راجعناها، لذلك لا نثبته. راجع القناة الرسمية أو اللوحات الميدانية في يوم الزيارة، لأن الساعات قد تتغيّر موسميًا أو مع الفعاليات.</div>
+      </div>
+      <div class="plan-grid">
+        {days.map((d) => (
+          <article class="card plan-card"><div class="icon-box">◷</div><div><h3>{d.day}</h3><p>{d.opens} – {d.closes}</p></div></article>
+        ))}
+        <article class="card plan-card"><div class="icon-box">☾</div><div><h3>أفضل وقت</h3><p>ما قبل الغروب والمساء ألطف عادةً وأنسب لمشاهدة الإضاءة والنافورة. الوصول مبكرًا يخفّف الزحام في العطل.</p></div></article>
+        <article class="card plan-card"><div class="icon-box">⌁</div><div><h3>عروض النافورة</h3><p>النافورة التفاعلية معروفة، لكن مواعيد تشغيلها تتأثر بالموسم والصيانة والطقس. تحقق منها في يوم الزيارة.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-[#f2e6ce]/35" id="where">
+    <div class="shell grid gap-10 lg:grid-cols-[1.2fr_.8fr]">
+      <div>
+        <span class="eyebrow">أين يقع؟</span>
+        <h2 class="section-title">العنوان والموقع التقريبي</h2>
+        <p class="section-lead">المنتزه في حي الردف جنوب الطائف، ضمن نسيج حضري يضم أحياء الردف وشيهار والسداد.</p>
+        <div class="fact-grid mt-6">
+          <article class="card fact-card"><h3>العنوان</h3><p>{attraction.address}</p></article>
+          <article class="card fact-card"><h3>الإحداثيات</h3><p>21.22918، 40.42268 (خط العرض، خط الطول)</p></article>
+          <article class="card fact-card"><h3>الرمز المكاني</h3><p>{attraction.plusCode} — الطائف، منطقة مكة المكرمة</p></article>
+        </div>
+      </div>
+      <div class="rounded-3xl border border-[#17352f]/10 bg-white/70 p-6">
+        <h3 class="mt-0 text-lg">نصيحة تحديد الوجهة</h3>
+        <p class="text-sm text-[#49645d]">شارك مع سائق التطبيق أو الملاحة «منتزه الردف، حي الردف» لا اسم الحي فقط، واطلب الإنزال عند بوابة واضحة من المنتزه لتفادي التشتت عند العودة.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="transport">
+    <div class="shell">
+      <span class="eyebrow">الوصول بالتفصيل</span>
+      <h2 class="section-title">من المطار أو وسط الطائف إلى الردف</h2>
+      <p class="section-lead">اختيار وسيلة الوصول يعتمد على الوقت وعدد أفراد المجموعة ونقطة الانطلاق. لا نربطك بمشغّل تجاري محدد، ونكتفي بالأنواع والمسارات العامة مع خطوات عملية.</p>
+      <div class="transport mt-8">
+        <article class="rounded-3xl border border-[#17352f]/10 bg-white/70">
+          <div class="icon-box">✈</div>
+          <h3>مطار الطائف الدولي</h3>
+          <p>الدليل الصيفي الرسمي يذكر مسافة تقارب 35 كم. الخطوات:</p>
+          <ol class="transport-steps">
+            <li>اخرج من صالة الوصول إلى منطقة تاكسي المطار أو تطبيق نقل مرخّص.</li>
+            <li>شارك الوجهة «منتزه الردف، حي الردف» لا اسم الحي فقط.</li>
+            <li>زمن الرحلة يتغير بوضوح حسب الحركة والطريق؛ لا ننشر رقمًا ثابتًا.</li>
+            <li>بديل: استئجار سيارة من المطار إن كنت تكمل نحو الهدا أو الشفا.</li>
+          </ol>
+        </article>
+        <article class="rounded-3xl border border-[#17352f]/10 bg-white/70">
+          <div class="icon-box">▣</div>
+          <h3>الحافلات العامة</h3>
+          <p>شبكة تحيط بالأحياء الرئيسية وتعمل ساعاتًا طويلة بحسب المصادر الرسمية. الخطوات:</p>
+          <ol class="transport-steps">
+            <li>افحص خريطة الخطوط الحالية عبر تطبيق النقل الرسمي قبل الركوب.</li>
+            <li>لا تفترض توقفًا مباشرًا عند بوابة المنتزه؛ قد تحتاج ترانزيتًا أو مشيًا قصيرًا.</li>
+            <li>للوصول من مدن أخرى (مكة/جدة) اركب حافلة بين المدن إلى وسط الطائف ثم أكمل داخليًا.</li>
+            <li>تحقق من مواعيد العودة حتى لا تنتهي آخر رحلة قبل انتهاء زيارتك.</li>
+          </ol>
+        </article>
+        <article class="rounded-3xl border border-[#17352f]/10 bg-white/70">
+          <div class="icon-box">◇</div>
+          <h3>تطبيق نقل أو سيارة أجرة</h3>
+          <p>خيار من الباب إلى الباب، خطواته:</p>
+          <ol class="transport-steps">
+            <li>اطلب إنزالًا عند بوابة واضحة من المنتزه وليس عند اسم الحي فقط.</li>
+            <li>شارك نقطة اللقاء نفسها عند العودة لتجنب التشتت.</li>
+            <li>في الفعاليات قد تتغير نقاط الإنزال المؤقتة؛ اتبع توجيه الأمن.</li>
+            <li>قارن التكلفة المقدّرة قبل التحرك وليس بعد الوصول.</li>
+          </ol>
+        </article>
+      </div>
+      <div class="mt-6 grid gap-3 sm:grid-cols-3">
+        <div class="rounded-2xl border border-[#17352f]/10 bg-white/70 p-5 text-sm text-[#49645d]"><strong class="text-[#17352f]">من وسط الطائف:</strong> يتجه المسار عمومًا جنوبًا نحو حي الردف. استخدم الملاحة الحية؛ ازدحام شيهار والطرق المحيطة يغير المدة بشكل كبير.</div>
+        <div class="rounded-2xl border border-[#17352f]/10 bg-white/70 p-5 text-sm text-[#49645d]"><strong class="text-[#17352f]">من الهدا:</strong> طريق جبلي مذهل لكنه عرضة للضباب والمطر؛ افحص الطقس قبل النزول وخفّض السرعة.</div>
+        <div class="rounded-2xl border border-[#17352f]/10 bg-white/70 p-5 text-sm text-[#49645d]"><strong class="text-[#17352f]">من الشفا:</strong> مرتفعات جنوب غرب المدينة؛ اجمعها مع الردف في يوم واحد إن توفر الوقت والسيارة، وراجع الطريق والطقس.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-[#102b29] text-white" id="parking">
+    <div class="shell grid gap-10 lg:grid-cols-[.8fr_1.2fr]">
+      <div>
+        <span class="eyebrow !bg-white/10 !text-white before:!bg-[#d7bd8c]">داخل المنتزه</span>
+        <h2 class="section-title">المواقف والخدمات الميدانية</h2>
+        <p class="section-lead !text-white/70">وثقت تقارير التطوير الرسمية وجود مواقف موزعة حول عدة مداخل، ومرافق للوضوء ودورات مياه ومصليات. التوزيع والإتاحة قد يتغيران مع الصيانة والفعاليات.</p>
+      </div>
+      <div class="grid gap-3">
+        <div class="rounded-2xl border border-white/15 bg-white/5 p-5 text-sm text-white/70"><strong class="text-white">المواقف:</strong> اتبع توجيه الأمن واللوحات بدل الاعتماد على بوابة واحدة في أوقات الذروة، واحرص على الإضاءة عند المغادرة ليلًا.</div>
+        <div class="rounded-2xl border border-white/15 bg-white/5 p-5 text-sm text-white/70"><strong class="text-white">دورات المياه والمصليات:</strong> استخدم خريطة الموقع واللوحات داخل المنتزه؛ قد يُغلق بعضها للصيانة أو يتغير توزيعها.</div>
+        <div class="rounded-2xl border border-white/15 bg-white/5 p-5 text-sm text-white/70"><strong class="text-white">سهولة الوصول:</strong> ممرات رئيسية ممهدة ومساحات واسعة متاحة، لكن تحقق من أقرب بوابة ومسار ممهد لاحتياج محدد.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="map">
+    <div class="shell">
+      <span class="eyebrow">الخريطة</span>
+      <h2 class="section-title">الخريطة بالعربية</h2>
+      <p class="section-lead">الموقع: {attraction.address}. الإحداثيات التقريبية المستخدمة في الخريطة: 21.22918، 40.42268.</p>
+      <div class="map-frame mt-8">
+        <iframe src={attraction.mapEmbed} width="600" height="450" title="خريطة منتزه الردف في الطائف" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+      <div class="mt-4 flex flex-wrap gap-3">
+        <a class="button button-primary" href={attraction.mapUrl} target="_blank" rel="noopener noreferrer">فتح الخريطة والاتجاهات</a>
+        <span class="chip">لغة الخريطة: العربية · المنطقة: السعودية</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-[#f2e6ce]/35">
+    <div class="shell">
+      <h2 class="section-title !text-2xl">أسئلة ذات صلة</h2>
+      <p class="section-lead">تجد المزيد من الإجابات المرتبة حسب الموضوع في صفحة الأسئلة الشائعة.</p>
+      <nav aria-label="روابط ذات صلة" class="related-grid">
+        <a href="/faq/"><strong>الأسئلة الشائعة</strong><span>تذاكر، ساعات، وصول، مرافق وطقس</span></a>
+        <a href="/attractions/"><strong>المرافق والنافورة</strong><span>البحيرة، الصخور، الممرات والفعاليات</span></a>
+        <a href="/gallery/"><strong>صور منتزه الردف</strong><span>لمحات حقيقية من المكان</span></a>
+        <a href="/"><strong>الدليل الكامل</strong><span>القصة والاستراتيجية الموسمية</span></a>
+      </nav>
+    </div>
+  </section>
+</BaseLayout>
