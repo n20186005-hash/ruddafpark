@@ -40,7 +40,7 @@ const attractionSchema = {
     longitude: attraction.longitude
   },
   hasMap: attraction.mapUrl,
-  sameAs: [attraction.mapUrl, attraction.sources.visitSaudi, attraction.sources.taifMunicipality]
+  sameAs: [attraction.mapUrl, attraction.sources.visitSaudi]
 };
 ---
 
@@ -86,7 +86,7 @@ const attractionSchema = {
         {photos.map((photo, index) => (
           <figure class="photo-card m-0">
             <img src={photo.src} alt={photo.alt} width={index === 0 ? 1200 : 800} height={index === 0 ? 1000 : 600} loading={index === 0 ? 'eager' : 'lazy'} referrerpolicy="no-referrer" />
-            <figcaption class="photo-credit"><a href={photo.creditUrl} target="_blank" rel="noopener noreferrer" class="underline decoration-white/30 underline-offset-4">{photo.credit}</a> · الحقوق لأصحاب الصورة الأصليين</figcaption>
+            <figcaption class="photo-credit"><a href={photo.creditUrl} target="_blank" rel="noopener noreferrer" class="underline decoration-white/30 underline-offset-4">{photo.credit}</a> · رسم أصلي للدليل</figcaption>
           </figure>
         ))}
       </div>
