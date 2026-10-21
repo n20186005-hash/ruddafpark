@@ -1,7 +1,7 @@
 ---
 const compact = Astro.props.compact ?? false;
 ---
-<header class:list={["fixed inset-x-0 top-0 z-50", compact ? "bg-[#fffdf7]/95 text-[#17352f] border-b border-[#17352f]/10 backdrop-blur-xl" : "text-white"]}>
+<header class:list={["fixed inset-x-0 top-0 z-50", compact ? "bg-[#fffdf7]/95 text-[#17352f] border-b border-[#17352f]/10 backdrop-blur-xl" : "bg-[#17352f] text-white"]}>
   <div class="shell flex items-center justify-between gap-4 py-4">
     <a href="/" class="flex items-center gap-3 no-underline" aria-label="العودة إلى الصفحة الرئيسية">
       <img src="/brand/logo-mark.svg" alt="" width="42" height="42" class="h-10 w-10" />
@@ -14,6 +14,7 @@ const compact = Astro.props.compact ?? false;
       <a href="/gallery/" class="no-underline opacity-90 hover:opacity-100">الصور</a>
       <a href="/faq/" class="no-underline opacity-90 hover:opacity-100">الأسئلة</a>
     </nav>
+    <details class="mobile-nav"><summary>القائمة</summary><nav aria-label="تنقل الهاتف"><a href="/">الرئيسية</a><a href="/attractions/">المرافق والنافورة</a><a href="/location-hours/">الموقع والساعات</a><a href="/gallery/">الصور</a><a href="/nearby/">معالم الطائف</a><a href="/faq/">الأسئلة</a></nav></details>
     <a href="/location-hours/#map" class:list={["button text-sm", compact ? "button-primary" : "button-hero"]}>الخريطة</a>
   </div>
 </header>

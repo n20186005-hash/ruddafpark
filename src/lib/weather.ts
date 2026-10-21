@@ -44,13 +44,14 @@ export interface WeatherAdvice {
 export interface WeatherResult {
   ok: boolean;
   updatedAt?: string;
+  sourceTime?: string;
   now?: WeatherNow;
   days?: WeatherDay[];
   advice?: WeatherAdvice;
 }
 
 const LAT = 21.22918;
-const LON = 40.42268;
+const LON = 40.4252563;
 const TZ = 'Asia/Riyadh';
 const SUCCESS_TTL = 30 * 60 * 1000;
 const FAILURE_TTL = 2 * 60 * 1000;
@@ -131,7 +132,7 @@ function uvLabel(uv: number): string {
 const WEEKDAYS = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
 
 function weekdayAr(iso: string): string {
-  const d = new Date(iso + 'T00:00:00');
+  const d = new Date(iso + 'T00:00:00Z');
   if (Number.isNaN(d.getTime())) return '';
   return WEEKDAYS[d.getUTCDay()] ?? '';
 }
@@ -183,7 +184,7 @@ function buildAdvice(now: WeatherNow, today: WeatherDay): WeatherAdvice {
   }
   if (THUNDER.has(code) || THUNDER.has(dayCode)) {
     risk.push('خطر رعد وبرق؛ لا تصعد المرتفعات الصخرية ولا تقف تحت الأشجار المكشوفة أو على حواف مكشوفة.');
-    activity.push('تجنّب المسارات المكشوفة والمشاريع المائية الآن؛ المسارات المظللة أنسب.');
+    activity.push('تجنّب المسارات المكشوفة والمشاريع المائية الآن؛ أجّل الجولة الخارجية واتبع الإرشاد الرسمي أو الميداني.');
   }
   if (HEAVY_RAIN.has(code) || HEAVY_RAIN.has(dayCode)) {
     risk.push('مطر غزير؛ تجنّب الأودية والمنخفضات والصخور المنزلقة.');
@@ -220,17 +221,17 @@ function buildAdvice(now: WeatherNow, today: WeatherDay): WeatherAdvice {
   // 💨 رياح
   if (windB >= 7) {
     risk.push('رياح قوية؛ ابتعد عن حواف الصخور المرتفة والهياكل المؤقتة.');
-    activity.push('المسارات المكشوفة والرحلات المعلّقة قد تتوقف.');
+    activity.push('قلل التعرض في المساحات المكشوفة واتبع الإرشاد الميداني.');
   } else if (windB >= 5) {
-    activity.push('رياح نشطة؛ قد تتأثر المسارات المكشوفة والرحلات المعلّقة، وتجنّب القبعات التي تطير بسهولة.');
+    activity.push('رياح نشطة؛ توخ الحذر في المسارات المكشوفة، وتجنّب القبعات التي تطير بسهولة.');
   }
 
   // ☁️ صحو/غيوم
   if (dayCode <= 1) {
-    activity.push('طقس صافٍ مناسب للتنزّه الخارجي ومشاهدة الغروب من المرتفعات.');
+    activity.push('إذا سمحت ظروف الموقع وساعات الدخول، احمِ نفسك من الشمس في المساحات المكشوفة.');
     if (uv < 5) items.push('واقٍ شمسي خفيف عند الإمكان.');
   } else if (dayCode <= 3) {
-    activity.push('ضوء لطيف مناسب للتصوير والجولات الطويلة دون حرارة مباشرة.');
+    activity.push('الغيوم لا تلغي الحرارة أو الأشعة؛ راجع بقية المؤشرات قبل تحديد طول الجولة.');
   }
 
   return { outfit, activity, items, risk };
@@ -260,7 +261,22 @@ export async function getWeather(): Promise<WeatherResult> {
       };
     };
 
-    const c = j.current ?? {};
+    const c = j.current;
+    const required = ['temperature_2m', 'relative_humidity_2m', 'apparent_temperature', 'weather_code', 'wind_speed_10m', 'wind_gusts_10m'];
+    if (!c || required.some((key) => typeof c[key] !== 'number' || !Number.isFinite(c[key]))) throw new Error('Incomplete current weather');
+    const rawTime = c.time;
+    if (typeof rawTime !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(rawTime)) throw new Error('Missing source time');
+    const sourceDate = new Date(rawTime + '+03:00');
+    const age = Date.now() - sourceDate.getTime();
+    if (!Number.isFinite(age) || age < -15 * 60000 || age > 90 * 60000) throw new Error('Stale source time');
+    const daily = j.daily;
+    if (!daily || !Array.isArray(daily.time) || daily.time.length < 1 || daily.time[0] !== rawTime.slice(0, 10)) throw new Error('Missing daily weather');
+    const requiredDaily = ['weather_code', 'temperature_2m_max', 'temperature_2m_min', 'precipitation_probability_max', 'uv_index_max', 'wind_speed_10m_max'] as const;
+    const count = Math.min(daily.time.length, 7);
+    for (let i = 0; i < count; i++) {
+      if (requiredDaily.some((key) => typeof daily[key]?.[i] !== 'number' || !Number.isFinite(daily[key]?.[i]))) throw new Error('Incomplete forecast');
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(daily.time[i]) || typeof daily.sunrise?.[i] !== 'string' || typeof daily.sunset?.[i] !== 'string') throw new Error('Incomplete forecast dates');
+    }
     const nowCode = round(c.weather_code);
     const nowDesc = describe(nowCode);
     const nowWind = round(c.wind_speed_10m);
@@ -310,7 +326,8 @@ export async function getWeather(): Promise<WeatherResult> {
 
     const result: WeatherResult = {
       ok: true,
-      updatedAt: new Date().toLocaleString('ar', { hour: '2-digit', minute: '2-digit', timeZone: TZ }),
+      updatedAt: new Date().toLocaleString('ar-SA', { dateStyle: 'medium', timeStyle: 'short', timeZone: TZ }),
+      sourceTime: sourceDate.toLocaleString('ar-SA', { dateStyle: 'medium', timeStyle: 'short', timeZone: TZ }),
       now,
       days,
       advice

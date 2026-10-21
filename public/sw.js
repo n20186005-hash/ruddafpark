@@ -1,54 +1,15 @@
-// Ruddaf Park Guide — service worker
-// Strategy: network-first for navigations (with cache fallback for offline),
-// cache-first for same-origin static assets.
-const CACHE = 'ruddaf-park-v1';
-const CORE = ['/', '/brand/og-image.png', '/brand/logo-mark.svg', '/favicon.svg', '/site.webmanifest'];
-
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(CORE).catch(() => {})).then(() => self.skipWaiting())
-  );
-});
-
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((key) => key !== CACHE).map((key) => caches.delete(key)))
-    ).then(() => self.clients.claim())
-  );
-});
-
-self.addEventListener('fetch', (event) => {
-  const req = event.request;
-  if (req.method !== 'GET') return;
-  const url = new URL(req.url);
-  if (url.origin !== self.location.origin) return;
-
-  if (req.mode === 'navigate') {
-    event.respondWith(
-      fetch(req)
-        .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE).then((cache) => cache.put(req, copy)).catch(() => {});
-          return res;
-        })
-        .catch(() => caches.match(req).then((r) => r || caches.match('/')))
-    );
-    return;
-  }
-
-  event.respondWith(
-    caches.match(req).then((cached) => {
-      if (cached) return cached;
-      return fetch(req)
-        .then((res) => {
-          if (res.ok && res.type === 'basic') {
-            const copy = res.clone();
-            caches.open(CACHE).then((cache) => cache.put(req, copy)).catch(() => {});
-          }
-          return res;
-        })
-        .catch(() => cached);
-    })
-  );
+/// <reference lib="webworker" />
+const worker = /** @type {ServiceWorkerGlobalScope} */ (/** @type {unknown} */ (self));
+const CACHE = 'ruddaf-owned-assets-v2';
+const CORE = ['/brand/logo-mark.svg', '/brand/park-illustration.svg', '/brand/favicon.svg'];
+worker.addEventListener('install', (event) => event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(CORE)).then(() => worker.skipWaiting())));
+worker.addEventListener('activate', (event) => event.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((key) => key.startsWith('ruddaf-') && key !== CACHE).map((key) => caches.delete(key)))).then(() => worker.clients.claim())));
+worker.addEventListener('fetch', (event) => {
+  const request = event.request, url = new URL(request.url);
+  if (request.method !== 'GET' || url.origin !== worker.location.origin || request.mode === 'navigate') return;
+  if (!url.pathname.startsWith('/brand/')) return;
+  event.respondWith(fetch(request).then((response) => {
+    if (response.ok) { const copy = response.clone(); event.waitUntil(caches.open(CACHE).then((cache) => cache.put(request, copy))); }
+    return response;
+  }).catch(async () => (await caches.match(request)) || Response.error()));
 });

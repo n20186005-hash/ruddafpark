@@ -40,5 +40,5 @@ const crumbSchema = breadcrumbs
     <h1>{title}</h1>
     <p>{lead}</p>
   </div>
-  {crumbSchema && <script type="application/ld+json" set:html={JSON.stringify(crumbSchema).replace(/</g, '\\u003c')} />}
+  {crumbSchema && <script is:inline type="application/ld+json" set:html={JSON.stringify(crumbSchema).replace(/</g, '\\u003c')} />}
 </section>

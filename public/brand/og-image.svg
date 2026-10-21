@@ -1,11 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="دليل منتزه الردف">
-  <rect width="1200" height="630" fill="#102b29"/>
-  <circle cx="140" cy="100" r="240" fill="#3a8f91" opacity=".12"/>
-  <circle cx="1050" cy="570" r="330" fill="#9c4d61" opacity=".11"/>
-  <path d="M640 510c28-163 131-285 297-367 122 55 197 155 225 300-119-63-229-66-331-14-73 36-137 63-191 81Z" fill="#d7bd8c" opacity=".88"/>
-  <path d="M590 535c119-72 239-90 359-53 78 24 144 69 198 135-104-27-204-24-299 8H590Z" fill="#3a8f91"/>
-  <path d="M1010 178c73 18 108 73 102 161-76-13-119-55-130-128l28-33Z" fill="#9c4d61"/>
-  <text x="120" y="280" direction="rtl" text-anchor="start" font-size="104" font-family="Tahoma, Arial, sans-serif" font-weight="700" fill="#fffdf7">منتزه الردف</text>
-  <text x="120" y="360" direction="rtl" text-anchor="start" font-size="36" font-family="Tahoma, Arial, sans-serif" fill="#dce7e2">دليل مستقل وغير ربحي لزوار الطائف</text>
-  <text x="120" y="455" direction="rtl" text-anchor="start" font-size="24" font-family="Tahoma, Arial, sans-serif" fill="#a9c7c2">المكان · القصة · الوصول · المرافق · الخريطة</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 840" role="img" aria-labelledby="title desc"><title id="title">رسم رمزي: ماء وصخور وخضرة</title><desc id="desc">تصميم أصلي للدليل، ليس صورة فوتوغرافية أو خريطة للمكان.</desc><defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#102b29"/><stop offset="1" stop-color="#317b7d"/></linearGradient></defs><path fill="url(#sky)" d="M0 0h1600v1000H0z"/><circle cx="1190" cy="230" r="100" fill="#d7bd8c"/><path d="M0 700Q180 430 430 700T900 660T1600 650V1000H0Z" fill="#9c8870"/><path d="M0 820Q320 600 630 800T1200 800T1600 730V1000H0Z" fill="#173f36"/><ellipse cx="870" cy="855" rx="430" ry="105" fill="#77b4ae"/><path d="M850 830Q820 500 755 700M850 830Q900 500 980 700M850 830V590" stroke="#d6ebe0" stroke-width="9" fill="none" opacity=".8"/><g fill="#397b55"><circle cx="230" cy="670" r="70"/><circle cx="1350" cy="670" r="110"/></g></svg>

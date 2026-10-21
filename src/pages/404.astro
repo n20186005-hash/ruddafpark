@@ -1,0 +1,7 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+Astro.response.status = 404;
+---
+<BaseLayout title="الصفحة غير موجودة | دليل منتزه الردف" description="لم نعثر على هذه الصفحة. ارجع إلى دليل منتزه الردف أو معلومات الموقع والساعات." compactHeader={true} noindex={true}>
+<article class="legal-shell"><h1>الصفحة غير موجودة</h1><p>ربما تغير الرابط. اختر وجهتك من صفحات الدليل.</p><a class="button button-primary" href="/">الصفحة الرئيسية</a> <a href="/location-hours/">الموقع والساعات</a></article>
+</BaseLayout>

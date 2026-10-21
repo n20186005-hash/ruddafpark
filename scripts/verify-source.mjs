@@ -13,6 +13,7 @@ const textExt = new Set(['.astro', '.ts', '.mjs', '.css', '.json', '.jsonc', '.m
 const skip = new Set(['node_modules', 'dist', '.git', '.astro', '.wrangler', 'scripts']);
 let failed = false;
 
+/** @param {string} dir */
 function walk(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     if (skip.has(entry.name)) continue;

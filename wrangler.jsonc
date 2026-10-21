@@ -1,9 +1,10 @@
 {
-  "name": "ruddaf-park-guide",
-  "main": "@astrojs/cloudflare/entrypoints/server",
+  "name": "ruddafpark",
+  "main": "./src/worker.ts",
   "compatibility_date": "2026-08-25",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
+    "run_worker_first": true,
     "binding": "ASSETS",
     "directory": "./dist/client"
   },

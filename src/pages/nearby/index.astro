@@ -4,7 +4,7 @@ import PageHeader from '../../components/PageHeader.astro';
 import { nearbyPlaces } from '../../data/site';
 
 const title = 'معالم الطائف القريبة من منتزه الردف | قصر شبرا والهدا والشفا وسوق عكاظ';
-const description = 'معالم عامة قريبة من منتزه الردف في الطائف لإكمال يومك: قصر شبرا والمنطقة التاريخية، الهدا، الشفا، وسوق عكاظ — مع نصائح عملية للربط بينها في مسار واحد.';
+const description = 'وجهات للبحث في منطقة الطائف عند تخطيط زيارة الردف؛ ليست كلها مجاورة للمنتزه: قصر شبرا والمنطقة التاريخية، الهدا، الشفا، وسوق عكاظ — مع نصائح عملية للربط بينها في مسار واحد.';
 
 const icons: Record<string, string> = {
   shubra: '🏛',
@@ -26,7 +26,7 @@ const icons: Record<string, string> = {
     <div class="shell">
       <span class="eyebrow">أمثلة لمعالم عامة</span>
       <h2 class="section-title">معالم الطائف حول الردف</h2>
-      <p class="section-lead">يمكن جمع أكثر من وجهة في يوم واحد إن توفر الوقت والسيارة، مع مراجعة الطريق والطقس خصوصًا للمناطق الجبلية.</p>
+      <p class="section-lead">هذه أسماء خيارات للبحث، ولم نتحقق هنا من ساعاتها أو أسعارها أو إمكانية الوصول إليها اليوم. لا تعد هذه القائمة وعدًا بأن كل وجهة قريبة أو متاحة في مسار واحد. تحقق من مصدر كل وجهة قبل إضافتها.</p>
       <div class="fact-grid mt-8">
         {nearbyPlaces.map((p) => (
           <article class="card fact-card">
@@ -34,7 +34,7 @@ const icons: Record<string, string> = {
             <h3>{p.title}</h3>
             <p>{p.text}</p>
             {p.href && (
-              <p class="m-0 mt-2"><a class="text-[#1d696c] font-bold underline underline-offset-4" href={p.href} target="_blank" rel="noopener noreferrer">مصدر رسمي للوجهة ↗</a></p>
+              <p class="m-0 mt-2"><a class="text-[#1d696c] font-bold underline underline-offset-4" href={p.href} target="_blank" rel="noopener noreferrer">بوابة الطائف الرسمية للبحث ↗</a></p>
             )}
           </article>
         ))}
