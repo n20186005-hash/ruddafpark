@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { attraction, SITE_NAME } from '../data/site';
+import { SITE_NAME } from '../data/site';
 
 interface Props {
   title: string;
@@ -12,6 +12,7 @@ interface Props {
   compactHeader?: boolean;
   schema?: Record<string, unknown> | Record<string, unknown>[];
   siteName?: string;
+  noindex?: boolean;
 }
 
 const {
@@ -21,10 +22,12 @@ const {
   imageAlt = 'دليل منتزه الردف — الطائف',
   compactHeader = false,
   schema,
+  noindex = false,
   siteName = SITE_NAME
 } = Astro.props;
 
-const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined;
+const canonicalPath = Astro.url.pathname.replace(/\/+$/, '') + '/';
+const canonical = Astro.site ? new URL(canonicalPath, Astro.site).toString() : undefined;
 const ogImage = Astro.site ? new URL(imagePath, Astro.site).toString() : undefined;
 const schemaPayload = schema
   ? JSON.stringify(Array.isArray(schema) ? schema : [schema]).replace(/</g, '\\u003c')
@@ -39,7 +42,10 @@ const schemaPayload = schema
     <meta name="theme-color" content="#102b29" />
     <meta name="color-scheme" content="light" />
     <title>{title}</title>
-    {canonical && <link rel="canonical" href={canonical} />}
+    <meta name="robots" content={noindex ? "noindex, follow" : "index, follow"} />
+    {canonical && !noindex && <link rel="canonical" href={canonical} />}
+    {canonical && !noindex && <link rel="alternate" hreflang="ar" href={canonical} />}
+    {canonical && !noindex && <link rel="alternate" hreflang="x-default" href={canonical} />}
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="ar_SA" />
     <meta property="og:site_name" content={siteName} />
@@ -63,32 +69,11 @@ const schemaPayload = schema
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="دليل منتزه الردف" />
-    {schemaPayload && <script type="application/ld+json" set:html={schemaPayload} />}
-    <script is:inline>
-      (() => {
-        const measurementId = 'G-HXM22WWPKP';
-        const readCookie = (name) => document.cookie.split('; ').find((row) => row.startsWith(name + '='))?.split('=')[1];
-        try {
-          const raw = readCookie('ruddaf_consent');
-          if (!raw) return;
-          const prefs = JSON.parse(decodeURIComponent(raw));
-          if (!prefs?.analytics) return;
-          window.dataLayer = window.dataLayer || [];
-          window.gtag = function(){ window.dataLayer.push(arguments); };
-          window.gtag('js', new Date());
-          window.gtag('config', measurementId, { anonymize_ip: true });
-          const script = document.createElement('script');
-          script.async = true;
-          script.src = 'https://www.googletagmanager.com/gtag/js?id=' + measurementId;
-          document.head.appendChild(script);
-        } catch (_) {}
-      })();
-    </script>
-    <script is:inline>
+    {schemaPayload && <script is:inline type="application/ld+json" set:html={schemaPayload} />}
+    <script>
+      import '../scripts/consent';
       if (import.meta.env.PROD && 'serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js').catch(() => {});
-        });
+        window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
       }
     </script>
   </head>

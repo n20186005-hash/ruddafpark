@@ -14,6 +14,7 @@ const compact = Astro.props.compact ?? false;
       <a href="/gallery/" class="no-underline opacity-90 hover:opacity-100">الصور</a>
       <a href="/faq/" class="no-underline opacity-90 hover:opacity-100">الأسئلة</a>
     </nav>
+    <details class="mobile-nav"><summary>القائمة</summary><nav aria-label="تنقل الهاتف"><a href="/">الرئيسية</a><a href="/attractions/">المرافق والنافورة</a><a href="/location-hours/">الموقع والساعات</a><a href="/gallery/">الصور</a><a href="/nearby/">معالم الطائف</a><a href="/faq/">الأسئلة</a></nav></details>
     <a href="/location-hours/#map" class:list={["button text-sm", compact ? "button-primary" : "button-hero"]}>الخريطة</a>
   </div>
 </header>

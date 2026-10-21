@@ -10,8 +10,10 @@ if (!fs.existsSync(dist)) {
 const forbidden = ['chrome-' + 'extension://', 'https://' + 'example.com', 'http://' + 'example.com', 'local' + 'host'];
 const textExt = new Set(['.html', '.xml', '.txt', '.json', '.js', '.css', '.map']);
 let failed = false;
+/** @type {string[]} */
 let sitemapFiles = [];
 
+/** @param {string} dir */
 function walk(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
@@ -32,14 +34,14 @@ function walk(dir) {
 }
 walk(dist);
 
-const site = process.env.SITE_URL?.trim();
+const site = process.env.SITE_URL?.trim() || 'https://ruddafpark.com';
 if (site) {
   let origin;
   try {
     origin = new URL(site).origin;
     if (!origin.startsWith('https://')) throw new Error('SITE_URL must use HTTPS');
   } catch (error) {
-    console.error(`Invalid SITE_URL: ${error.message}`);
+    console.error(`Invalid SITE_URL: ${error instanceof Error ? error.message : String(error)}`);
     failed = true;
   }
   if (sitemapFiles.length === 0) {

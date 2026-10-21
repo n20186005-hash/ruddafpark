@@ -14,7 +14,7 @@ const showWeather = weather.ok && !!now;
   <div class="shell">
     <span class="eyebrow">الطقس في الطائف</span>
     <h2 class="section-title" id="weather-title">طقس اليوم وتوقعات الأيام القادمة</h2>
-    <p class="section-lead">تُحدَّث هذه البطاقة آليًا من مصدر تنبؤات مناخية عند كل زيارة، وتقترح خطوات عملية حسب الحالة الراهنة. الأرقام إرشادية وليست بديلًا عن تنبيهات الطقس الرسمية.</p>
+    <p class="section-lead">توقعات Open-Meteo لنقطة قرب المنتزه، وقد تُحفظ لنحو 30 دقيقة. يظهر وقت بيانات المصدر ووقت جلبها بتوقيت الرياض؛ هذه تقديرات وليست رصدًا داخل المنتزه أو تنبيهات رسمية.</p>
 
     {showWeather && (
       <div class="weather-wrap mt-8">
@@ -33,7 +33,9 @@ const showWeather = weather.ok && !!now;
             {today && <li><span>احتمال المطر اليوم</span><strong>{today.precipProb}%</strong></li>}
             {today && <li><span>الأشعة فوق البنفسجية</span><strong>{today.uvIndex} · {today.uvLabel}</strong></li>}
           </ul>
-          {weather.updatedAt && <p class="weather-updated">آخر تحديث: {weather.updatedAt}</p>}
+          {weather.sourceTime && <p class="weather-updated">وقت بيانات المصدر: {weather.sourceTime} · الرياض</p>}
+          {weather.updatedAt && <p class="weather-updated">جُلبت البيانات: {weather.updatedAt} · الرياض</p>}
+          <p><a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Weather data by Open-Meteo.com</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>؛ الأرقام مقربة والنصائح من إعداد الدليل.</p>
         </div>
 
         {days.length > 0 && (
@@ -55,7 +57,7 @@ const showWeather = weather.ok && !!now;
           <div>
             {advice.risk.length > 0 && (
               <div class="advice-risk" role="alert">
-                <h3>⚠ تنبيه سلامة</h3>
+                <h3>ملاحظات مشتقة من التوقعات</h3>
                 <ul>{advice.risk.map((r) => <li>{r}</li>)}</ul>
               </div>
             )}
@@ -77,7 +79,7 @@ const showWeather = weather.ok && !!now;
 
     {!showWeather && (
       <div class="notice mt-8">
-        تعذّر عرض الطقس حاليًا. يمكنك مراجعة تطبيق الطقس المثبّت لديك قبل الزيارة، وسيعود العرض تلقائيًا لاحقًا.
+        تعذّر عرض الطقس حاليًا. يمكنك مراجعة تطبيق الطقس المثبّت لديك قبل الزيارة؛ لا نستنتج من غياب البيانات طقسًا جيدًا أو سيئًا.
       </div>
     )}
   </div>
