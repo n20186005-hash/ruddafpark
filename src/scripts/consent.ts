@@ -32,23 +32,63 @@ function apply(grant: boolean) {
 apply(read('localStorage', preferenceKey) === 'yes' && read('sessionStorage', vetoKey) === null);
 const checkbox = document.querySelector<HTMLInputElement>('#analytics');
 const status = document.querySelector<HTMLElement>('#status');
-function choose(grant: boolean) {
-  // Deny the running library before any persistence operation can fail.
-  if (!grant) apply(false);
-  const persisted = write('localStorage', preferenceKey, grant ? 'yes' : 'no');
-  const sessionSaved = grant ? clear('sessionStorage', vetoKey) : write('sessionStorage', vetoKey, 'yes');
-  if (grant) apply(persisted && sessionSaved);
-  try { document.cookie = 'ruddaf_consent=; Path=/; Max-Age=0; SameSite=Lax; Secure'; } catch { /* Legacy cookie is not read by this controller. */ }
+let deniedInPage = false;
+const stateText = () => allowed ? 'إحصاءات جوجل مفعلة في هذا التبويب.' : 'إحصاءات جوجل متوقفة في هذا التبويب.';
+function sync(message?: string) {
   if (checkbox) checkbox.checked = allowed;
-  if (status) status.textContent = persisted && sessionSaved
-    ? (allowed ? 'تم السماح بإحصاءات جوجل وحفظ القرار.' : 'إحصاءات جوجل متوقفة الآن، وحُفظ قرار الرفض.')
-    : (grant ? 'تعذر حفظ القرار بالكامل؛ إحصاءات جوجل متوقفة في هذه الصفحة. راجع الإعداد بعد التحديث أو فتح تبويب جديد.' : 'أوقفنا إحصاءات جوجل في هذه الصفحة. تعذر حفظ القرار بالكامل؛ قد يقتصر الرفض على هذه الصفحة أو هذا التبويب. راجع الإعداد بعد التحديث أو فتح تبويب جديد.');
+  if (status && message !== undefined) status.textContent = message;
+}
+function choose(grant: boolean) {
+  let persisted = false;
+  let sessionSaved = false;
+  let rollbackSaved = false;
+  let rollbackRemoved = false;
+  if (!grant) {
+    deniedInPage = true;
+    apply(false);
+    persisted = write('localStorage', preferenceKey, 'no');
+    sessionSaved = write('sessionStorage', vetoKey, 'yes');
+  } else {
+    // Verify veto removal and readability before publishing a shared grant.
+    const readable = read('localStorage', preferenceKey) !== 'unavailable';
+    sessionSaved = readable && clear('sessionStorage', vetoKey);
+    persisted = sessionSaved && write('localStorage', preferenceKey, 'yes');
+    if (persisted && sessionSaved) {
+      deniedInPage = false;
+      apply(true);
+    } else {
+      // Best-effort rollback if the shared grant could not be confirmed.
+      rollbackSaved = write('localStorage', preferenceKey, 'no');
+      if (!rollbackSaved) rollbackRemoved = clear('localStorage', preferenceKey);
+      deniedInPage = true;
+      sessionSaved = write('sessionStorage', vetoKey, 'yes');
+      apply(false);
+    }
+  }
+  try { document.cookie = 'ruddaf_consent=; Path=/; Max-Age=0; SameSite=Lax; Secure'; } catch { /* Legacy cookie is not read by this controller. */ }
+  let message: string;
+  if (grant && allowed) message = 'تم السماح بإحصاءات جوجل وحفظ القرار.';
+  else if (!grant && persisted && sessionSaved) message = 'إحصاءات جوجل متوقفة الآن، وحُفظ قرار الرفض.';
+  else if ((!grant && persisted) || rollbackSaved) message = 'إحصاءات جوجل متوقفة الآن، وحُفظ الرفض في التخزين المحلي. لم نؤكد السماح أو حفظ جميع إعدادات التبويب؛ قد يغيّر تبويب آخر القرار المشترك لاحقًا.';
+  else if (rollbackRemoved) message = 'إحصاءات جوجل متوقفة الآن، وأزلنا السماح المحفوظ بعد تعذر تأكيده. لم تكتمل عملية السماح؛ راجع الإعداد قبل السماح مجددًا.';
+  else if (sessionSaved) message = 'إحصاءات جوجل متوقفة في هذا التبويب، وحُفظ رفض التبويب عند التنقل وإعادة التحميل. تعذر تأكيد الرفض الدائم أو إزالة السماح المحفوظ؛ قد تستخدم تبويبات أخرى سماحًا ما زال محفوظًا. امسح بيانات الموقع لإزالته.';
+  else message = 'إحصاءات جوجل متوقفة في هذه الصفحة فقط. تعذر تأكيد حفظ الرفض أو إزالة السماح المحفوظ؛ قد يبقى سماح يمكن أن تستخدمه تبويبات أخرى. امسح بيانات الموقع من المتصفح قبل التنقل أو إعادة التحميل.';
+  sync(message);
   return { allowed, persisted, sessionSaved };
 }
 analyticsWindow.ruddafConsent = { choose, get allowed() { return allowed; } };
-if (checkbox) checkbox.checked = allowed;
+sync();
+checkbox?.addEventListener('change', () => { if (status) status.textContent = 'تعديل لم يُحفظ بعد. ' + stateText(); });
 document.querySelector('#save')?.addEventListener('click', () => choose(Boolean(checkbox?.checked)));
 document.querySelector('#reject')?.addEventListener('click', () => choose(false));
 document.querySelector('#clear')?.addEventListener('click', () => choose(false));
-window.addEventListener('storage', (event) => { if (event.key === preferenceKey && event.newValue !== 'yes') { apply(false); if (checkbox) checkbox.checked = false; } });
+window.addEventListener('storage', (event) => {
+  if (event.key !== preferenceKey && event.key !== null) return;
+  if (event.newValue !== 'yes') {
+    deniedInPage = true;
+    write('sessionStorage', vetoKey, 'yes');
+  }
+  apply(!deniedInPage && read('localStorage', preferenceKey) === 'yes' && read('sessionStorage', vetoKey) === null);
+  sync(stateText());
+});
 export {};
