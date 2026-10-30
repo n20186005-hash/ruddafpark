@@ -16,7 +16,7 @@ export const attraction = {
   latitude: 21.2291806,
   longitude: 40.4252563,
   rating: 4.4,
-  reviewCount: 56766,
+  reviewCount: 56812,
   hours: [
     { day: 'الإثنين', opens: '16:00', closes: '01:00' },
     { day: 'الثلاثاء', opens: '16:00', closes: '01:00' },

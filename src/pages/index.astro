@@ -1,13 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { attraction, photos, facilities, faqs } from '../data/site';
+import { TOPICS } from '../data/topics';
 import WeatherSection from '../components/WeatherSection.astro';
 import SeasonalStrategy from '../components/SeasonalStrategy.astro';
 import Itineraries from '../components/Itineraries.astro';
 import VisitorResponsibility from '../components/VisitorResponsibility.astro';
 
-const title = 'منتزه الردف بالطائف (Ruddaf Park) | أوقات الزيارة والموقع والنافورة';
-const description = 'دليل مستقل لمنتزه الردف في الطائف: موقعه واتجاهاته وساعات خرائط جوجل المؤرخة، الأحد مغلق في اللقطة، النافورة والمرافق والطقس وخيارات التحقق من التذاكر والصور قبل الزيارة.';
+const title = 'منتزه الردف بالطائف | أوقات الزيارة والدخول المجاني والموقع والنافورة';
+const description = 'دليل مستقل لزيارة منتزه الردف بالطائف: أوقات الدخول، التذاكر، الموقع والمواقف، النافورة، الصور وخيارات الطعام القريبة. تحقق من أحدث المعلومات قبل الزيارة.';
 const pageUrl = Astro.site ? new URL('/', Astro.site).toString() : undefined;
 const attractionId = Astro.site ? new URL('/#attraction', Astro.site).toString() : undefined;
 const imageUrl = Astro.site ? new URL('/brand/og-image.png', Astro.site).toString() : undefined;
@@ -62,7 +63,7 @@ const attractionSchema = {
         <div class="hero-stat"><strong>أكثر من 565 ألف م²</strong><span>بحسب تقرير وكالة الأنباء السعودية، 27 يوليو 2026</span></div>
         <div class="hero-stat"><strong>التذاكر والدخول</strong><span>روح السعودية: دخول بلا تذكرة؛ تحقق من شروط الفعاليات</span></div>
         <div class="hero-stat"><strong>الأحد مغلق</strong><span>في لقطة خرائط جوجل 21 أكتوبر 2026، وليست ضمانًا تشغيليًا</span></div>
-        <div class="hero-stat"><strong>4.4 / 5</strong><span>خرائط جوجل · 56,766 مراجعة · 21 أكتوبر 2026؛ تقييم خارجي متغير</span></div>
+        <div class="hero-stat"><strong>4.4 / 5</strong><span>خرائط جوجل · 56,812 مراجعة · 30 أكتوبر 2026؛ تقييم خارجي متغير</span></div>
       </div>
     </div>
   </section>
@@ -220,6 +221,23 @@ const attractionSchema = {
         <li><a href={attraction.sources.visitSaudiTaif} target="_blank" rel="noopener noreferrer"><span><strong>دليل الطائف الرسمي</strong><br/><small>سياق الوجهة والمعلومات السياحية العامة</small></span><span>↗</span></a></li>
         <li><a href={attraction.sources.taifMunicipality} target="_blank" rel="noopener noreferrer"><span><strong>أمانة الطائف</strong><br/><small>الجهة البلدية المختصة بالمجال الحضري والخدمات العامة</small></span><span>↗</span></a></li>
       </ul>
+    </div>
+  </section>
+
+  <section class="section bg-[#f2e6ce]/35" aria-labelledby="topics-title">
+    <div class="shell">
+      <span class="eyebrow">أدلة عملية</span>
+      <h2 class="section-title" id="topics-title">أدلة موضوعية للزيارة</h2>
+      <p class="section-lead">صفحات مركزة تجيب على نية بحث واضحة: الدخول والتكلفة، النافورة، المواقف، العائلة، الطقس، الوصول، الطعام وخطوط السير — مع روابط داخلية تربطها ببعضها وبصفحات الدليل.</p>
+      <div class="grid gap-3 mt-6 sm:grid-cols-2 lg:grid-cols-3">
+        {TOPICS.map((t) => (
+          <a class="card card-pad no-underline hover:border-[#1d696c]/40" href={`/${t.slug}/`}>
+            <span class="chip">{t.eyebrow}</span>
+            <h3 class="mt-3 text-lg">{t.title}</h3>
+            <p class="m-0 text-sm text-[#49645d]">{t.lead}</p>
+          </a>
+        ))}
+      </div>
     </div>
   </section>
 

@@ -1,3 +1,6 @@
+---
+import { TOPICS } from '../data/topics';
+---
 <footer class="border-t border-[#17352f]/10 bg-[#102b29] text-white">
   <div class="shell py-12">
     <div class="grid gap-10 lg:grid-cols-[1.2fr_.8fr]">
@@ -17,6 +20,10 @@
         <a class="rounded-xl border border-white/15 px-4 py-3 no-underline hover:bg-white/5" href="/gallery/">صور منتزه الردف</a>
         <a class="rounded-xl border border-white/15 px-4 py-3 no-underline hover:bg-white/5" href="/nearby/">معالم الطائف القريبة</a>
         <a class="rounded-xl border border-white/15 px-4 py-3 no-underline hover:bg-white/5" href="/faq/">الأسئلة الشائعة</a>
+        <span class="px-1 pt-3 text-xs font-bold uppercase tracking-wide text-white/45">أدلة موضوعية</span>
+        {TOPICS.map((t) => (
+          <a class="rounded-xl border border-white/15 px-4 py-3 no-underline hover:bg-white/5" href={`/${t.slug}/`}>{t.title}</a>
+        ))}
         <span class="px-1 pt-3 text-xs font-bold uppercase tracking-wide text-white/45">الموقع</span>
         <a class="rounded-xl border border-white/15 px-4 py-3 no-underline hover:bg-white/5" href="/privacy/">سياسة الخصوصية</a>
         <a class="rounded-xl border border-white/15 px-4 py-3 no-underline hover:bg-white/5" href="/terms/">شروط الخدمة</a>

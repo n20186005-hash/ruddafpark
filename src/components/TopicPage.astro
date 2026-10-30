@@ -1,0 +1,144 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { attraction } from '../data/site';
+import type { TopicContent } from '../data/topics';
+
+interface Props {
+  topic: TopicContent;
+}
+
+const { topic } = Astro.props;
+
+const canonicalUrl = Astro.site ? new URL(`/${topic.slug}/`, Astro.site).toString() : undefined;
+const breadcrumbs = [
+  { name: 'الرئيسية', url: '/' },
+  { name: topic.title, url: `/${topic.slug}/` }
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: topic.faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a }
+  }))
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbs.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.name,
+    item: Astro.site ? new URL(c.url, Astro.site).toString() : c.url
+  }))
+};
+
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: topic.metaTitle,
+  description: topic.metaDescription,
+  ...(canonicalUrl ? { url: canonicalUrl } : {}),
+  ...(topic.updated ? { dateModified: topic.updated } : {}),
+  about: Astro.site ? new URL('/#attraction', Astro.site).toString() : undefined,
+  inLanguage: 'ar-SA',
+  isPartOf: Astro.site ? { '@type': 'WebSite', name: 'دليل منتزه الردف', url: Astro.site.toString() } : undefined
+};
+
+const schema = [webPageSchema, breadcrumbSchema, faqSchema];
+---
+
+<BaseLayout
+  title={topic.metaTitle}
+  description={topic.metaDescription}
+  compactHeader={true}
+  schema={schema}
+>
+  <section class="subpage-hero">
+    <div class="shell subpage-hero-inner">
+      <nav aria-label="مسار التنقل" class="breadcrumbs">
+        <ol>
+          {breadcrumbs.map((c, i) => (
+            <li>
+              <a href={c.url}>{c.name}</a>
+              {i < breadcrumbs.length - 1 && <span aria-hidden="true"> › </span>}
+            </li>
+          ))}
+        </ol>
+      </nav>
+      <span class="eyebrow">{topic.eyebrow}</span>
+      <h1>{topic.title}</h1>
+      <p>{topic.lead}</p>
+      {topic.updated && (
+        <p class="text-sm text-white/60">آخر مراجعة للمعلومات العامة: {topic.updated}</p>
+      )}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell">
+      {topic.blocks.map((block) => (
+        <div class="mb-12">
+          <h2 class="section-title !text-2xl">{block.heading}</h2>
+          {block.paragraphs?.map((p) => <p class="section-lead">{p}</p>)}
+          {block.bullets && (
+            <ul class="topic-bullets">
+              {block.bullets.map((b) => <li>{b}</li>)}
+            </ul>
+          )}
+          {block.steps && (
+            <ol class="topic-steps">
+              {block.steps.map((s) => <li>{s}</li>)}
+            </ol>
+          )}
+          {block.callout && <div class="notice">{block.callout}</div>}
+        </div>
+      ))}
+
+      <section class="mb-12" aria-labelledby="topic-faq-title">
+        <h2 class="section-title !text-2xl" id="topic-faq-title">أسئلة ذات صلة</h2>
+        <div class="faq">
+          {topic.faq.map((f) => (
+            <details><summary>{f.q}</summary><p>{f.a}</p></details>
+          ))}
+        </div>
+      </section>
+
+      <div class="notice">
+        إذا تعارضت هذه الصفحة مع إشعار ميداني حديث أو إعلان رسمي في يوم الزيارة، فالإعلان الأحدث هو المرجع. نحرص على التمييز بين المعلومة الموثقة والنصيحة العملية.
+      </div>
+
+      <nav aria-label="صفحات ذات صلة" class="related-grid mt-8">
+        {topic.related.map((r) => (
+          <a href={r.url}><strong>{r.name}</strong><span>دليل منتزه الردف</span></a>
+        ))}
+      </nav>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .topic-bullets {
+    margin: 1rem 0 0;
+    padding-right: 1.4rem;
+    display: grid;
+    gap: 0.5rem;
+    color: var(--ink-soft);
+  }
+  .topic-bullets li::marker { color: var(--water-deep); }
+  .topic-steps {
+    margin: 1rem 0 0;
+    padding-right: 1.4rem;
+    display: grid;
+    gap: 0.5rem;
+    color: var(--ink-soft);
+    counter-reset: step;
+  }
+  .topic-steps li {
+    padding-right: 0.3rem;
+  }
+  .topic-steps li::marker { color: var(--water-deep); font-weight: 800; }
+</style>
