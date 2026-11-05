@@ -44,10 +44,15 @@ export const SITE_NAME = `${attraction.name} ${attraction.city} — دليل ز�
 export const withSiteName = (suffix: string): string => `${suffix} | ${SITE_NAME}`;
 
 export const photos = [{
-  src: '/brand/park-illustration.svg',
-  alt: 'رسم رمزي أصلي للماء والصخور والخضرة؛ ليس صورة من منتزه الردف',
-  credit: 'رسم توضيحي من إعداد الدليل، وليس مشهدًا موثقًا أو خريطة',
-  creditUrl: '/gallery/'
+  src: '/images/ruddaf-park-aerial.jpg',
+  alt: 'صورة جوية حقيقية لمنتزه الردف في الطائف تظهر الممرات والمساحات الخضراء',
+  credit: 'صورة لمنتزه الردف — روح السعودية',
+  creditUrl: 'https://www.visitsaudi.com/en/taif/attractions/arruddaf-park-in-taif'
+}, {
+  src: '/images/ruddaf-park-rocks.webp',
+  alt: 'صخور طبيعية ومساحات عشبية وممرات داخل منتزه الردف في الطائف',
+  credit: 'صورة لمنتزه الردف — Mindtrip',
+  creditUrl: 'https://mindtrip.ai/attraction/taif-makkah/ruddaf-park/at-BcqNrM17'
 }] as const;
 
 export const faqs: ReadonlyArray<readonly [string, string]> = [

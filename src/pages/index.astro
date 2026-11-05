@@ -83,11 +83,11 @@ const attractionSchema = {
         </div>
         <div class="notice mt-7">لا نعرض أسطورة أو قصة شعبية على أنها حقيقة: لم نعثر في المصادر الرسمية التي راجعناها على رواية فولكلورية موثقة خاصة بالمنتزه، لذلك فضّلنا توثيق تاريخه الحضري والاجتماعي بدل اختلاق حكاية جذابة.</div>
       </div>
-      <div class="photo-grid" aria-label="رسوم توضيحية للدليل">
+      <div class="photo-grid" aria-label="صور حقيقية لمنتزه الردف">
         {photos.map((photo, index) => (
           <figure class="photo-card m-0">
             <img src={photo.src} alt={photo.alt} width={index === 0 ? 1200 : 800} height={index === 0 ? 1000 : 600} loading={index === 0 ? 'eager' : 'lazy'} referrerpolicy="no-referrer" />
-            <figcaption class="photo-credit"><a href={photo.creditUrl} target="_blank" rel="noopener noreferrer" class="underline decoration-white/30 underline-offset-4">{photo.credit}</a> · رسم أصلي للدليل</figcaption>
+            <figcaption class="photo-credit"><a href={photo.creditUrl} target="_blank" rel="noopener noreferrer" class="underline decoration-white/30 underline-offset-4">{photo.credit}</a> · صورة للموقع</figcaption>
           </figure>
         ))}
       </div>
